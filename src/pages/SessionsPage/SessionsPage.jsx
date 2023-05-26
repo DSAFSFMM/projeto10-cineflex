@@ -1,34 +1,44 @@
-import styled from "styled-components"
+import styled from "styled-components";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
+import { useEffect } from "react";
+import { useState } from "react";
 
 export default function SessionsPage() {
+    const {idFilme} = useParams();
+    const [dias, setDias] = useState(null); 
+
+    useEffect(()=>{
+        const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/movies/${idFilme}/showtimes`);
+        promise.then((resposta)=>setDias(resposta.data.days));
+    },[])
+
+    if(dias === null){
+        return(
+            <PageContainer>
+                <p>Carregando....</p>    
+            </PageContainer>
+        );
+    }
 
     return (
         <PageContainer>
             Selecione o horário
             <div>
-                <SessionContainer>
-                    Sexta - 03/03/2023
+                {dias.map((el)=>
+                <SessionContainer key={el.id}>
+                    {el.weekday} - {el.date}
                     <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
+                        {el.showtimes.map((sessao)=>
+                            <Link key={sessao.id} to={`/assentos/${sessao.id}`}>
+                                <button>
+                                    {sessao.name}
+                                </button>
+                            </Link>
+                        )}
                     </ButtonsContainer>
-                </SessionContainer>
+                </SessionContainer>)}
 
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
-
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
             </div>
 
             <FooterContainer>
