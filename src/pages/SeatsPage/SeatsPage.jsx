@@ -63,7 +63,7 @@ export default function SeatsPage(props) {
             Selecione o(s) assento(s)
 
             <SeatsContainer>
-                {assentos.seats.map((el)=><SeatItem key={el.id} selecionado={selecionados.includes(el.id)} estado={el.isAvailable} onClick={()=>selecionaAssento(el.id, el.isAvailable, el.name)}>{el.name}</SeatItem>)}
+                {assentos.seats.map((el)=><SeatItem data-test="seat" key={el.id} selecionado={selecionados.includes(el.id)} estado={el.isAvailable} onClick={()=>selecionaAssento(el.id, el.isAvailable, el.name)}>{el.name}</SeatItem>)}
             </SeatsContainer>
 
             <CaptionContainer>
@@ -83,15 +83,15 @@ export default function SeatsPage(props) {
 
             <FormContainer onSubmit={reservaAssentos}>
                 <label htmlFor="nome">Nome do Comprador:</label>
-                <input id="nome" placeholder="Digite seu nome..." value={name} onChange={(el)=>setName(el.target.value)} required/>
+                <input data-test="client-name" id="nome" placeholder="Digite seu nome..." value={name} onChange={(el)=>setName(el.target.value)} required/>
 
                 <label htmlFor="cpf">CPF do Comprador:</label>
-                <input id="cpf" placeholder="Digite seu CPF..." value={cpf} onChange={(el)=>setCpf(el.target.value)} required/>
+                <input data-test="client-cpf" id="cpf" placeholder="Digite seu CPF..." value={cpf} onChange={(el)=>setCpf(el.target.value)} required/>
 
-                <button type="submit">Reservar Assento(s)</button>
+                <button data-test="book-seat-btn" type="submit">Reservar Assento(s)</button>
             </FormContainer>
 
-            <FooterContainer>
+            <FooterContainer data-test="footer" >
                 <div>
                     <img src={assentos.movie.posterURL} alt="poster" />
                 </div>
