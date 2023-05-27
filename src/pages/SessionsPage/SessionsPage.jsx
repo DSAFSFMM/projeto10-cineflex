@@ -6,14 +6,16 @@ import { useState } from "react";
 
 export default function SessionsPage() {
     const {idFilme} = useParams();
-    const [dias, setDias] = useState(null); 
+    const [filme, setFilme] = useState(null);
 
     useEffect(()=>{
         const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/movies/${idFilme}/showtimes`);
-        promise.then((resposta)=>setDias(resposta.data.days));
+        promise.then((resposta)=>{
+            setFilme(resposta.data);
+        });
     },[])
 
-    if(dias === null){
+    if(filme === null){
         return(
             <PageContainer>
                 <p>Carregando....</p>    
@@ -25,7 +27,7 @@ export default function SessionsPage() {
         <PageContainer>
             Selecione o horário
             <div>
-                {dias.map((el)=>
+                {filme.days.map((el)=>
                 <SessionContainer key={el.id}>
                     {el.weekday} - {el.date}
                     <ButtonsContainer>
@@ -43,10 +45,10 @@ export default function SessionsPage() {
 
             <FooterContainer>
                 <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
+                    <img src={filme.posterURL} alt="poster" />
                 </div>
                 <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
+                    <p>{filme.title}</p>
                 </div>
             </FooterContainer>
 

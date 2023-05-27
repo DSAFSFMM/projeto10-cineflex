@@ -6,6 +6,8 @@ import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
 import axios from "axios";
 import { useState } from "react"
+import ResetStyle from "./style/ResetStyle"
+import GlobalStyle from "./style/GlobalStyle"
 
 export default function App() {
 
@@ -16,6 +18,8 @@ export default function App() {
 
     return (
         <>
+            <ResetStyle/>
+            <GlobalStyle/>
             <BrowserRouter>
 
                 <NavContainer>CINEFLEX</NavContainer>

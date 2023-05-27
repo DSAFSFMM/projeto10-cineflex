@@ -17,7 +17,7 @@ export default function SeatsPage(props) {
     useEffect(()=>{
         const promisse = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`);
         promisse.then((resposta)=>{
-            setAssentos(resposta.data.seats);
+            setAssentos(resposta.data);
             setFilme(resposta.data);
         });
         promisse.catch((erro)=>console.log(erro));
@@ -34,15 +34,13 @@ export default function SeatsPage(props) {
     }
 
     function selecionaAssento(id,estado,name){
-        if(!estado){
+        if(estado){
             if (selecionados.includes(id)) {
                 setSelecionados(selecionados.filter((item)=>item !== id));
                 setAssentosName(assentosName.filter((item)=>item !== name));
-                console.log(selecionados.filter((item)=>item !== id));
             }else{
                 setSelecionados([...selecionados, id]);
                 setAssentosName([...assentosName, name]);
-                console.log([...selecionados, id]);
             }
         }else{
             alert("Esse assento não está disponível");
@@ -65,7 +63,7 @@ export default function SeatsPage(props) {
             Selecione o(s) assento(s)
 
             <SeatsContainer>
-                {assentos.map((el)=><SeatItem key={el.id} selecionado={selecionados.includes(el.id)} estado={el.isAvailable} onClick={()=>selecionaAssento(el.id, el.isAvailable, el.name)}>{el.name}</SeatItem>)}
+                {assentos.seats.map((el)=><SeatItem key={el.id} selecionado={selecionados.includes(el.id)} estado={el.isAvailable} onClick={()=>selecionaAssento(el.id, el.isAvailable, el.name)}>{el.name}</SeatItem>)}
             </SeatsContainer>
 
             <CaptionContainer>
@@ -95,11 +93,11 @@ export default function SeatsPage(props) {
 
             <FooterContainer>
                 <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
+                    <img src={assentos.movie.posterURL} alt="poster" />
                 </div>
                 <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
-                    <p>Sexta - 14h00</p>
+                    <p>{assentos.movie.title}</p>
+                    <p>{assentos.day.weekday} - {assentos.name}</p>
                 </div>
             </FooterContainer>
 
@@ -191,8 +189,8 @@ const CaptionItem = styled.div`
     font-size: 12px;
 `
 const SeatItem = styled.div`
-    border: 1px solid ${(props)=> props.estado?"#F7C52B":"#7B8B99"} ;         // Essa cor deve mudar
-    background-color: ${(props)=> props.estado?"#FBE192":"#C3CFD9"};    // Essa cor deve mudar
+    border: 1px solid ${(props)=> !props.estado?"#F7C52B":"#7B8B99"} ;         // Essa cor deve mudar
+    background-color: ${(props)=> !props.estado?"#FBE192":"#C3CFD9"};    // Essa cor deve mudar
     border: 1px solid ${(props)=> props.selecionado?"#0E7D71":""} ;
     background-color: ${(props)=> props.selecionado?"#1AAE9E":""}; 
     height: 25px;
