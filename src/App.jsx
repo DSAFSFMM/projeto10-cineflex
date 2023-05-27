@@ -5,10 +5,14 @@ import SeatsPage from "./pages/SeatsPage/SeatsPage"
 import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
 import axios from "axios";
+import { useState } from "react"
 
 export default function App() {
 
     axios.defaults.headers.common['Authorization'] = 'PMThHvQBl3Zrj5RT69hxduVc';
+
+    const [comprador, setComprador] = useState({});
+    const [filme, setFilme] = useState({});
 
     return (
         <>
@@ -19,8 +23,8 @@ export default function App() {
                 <Routes>
                     <Route path="/" element={<HomePage />}></Route>
                     <Route path="/sessoes/:idFilme" element={<SessionsPage />}></Route>
-                    <Route path="/assentos/:idSessao" element={<SeatsPage />}></Route>
-                    <Route path="/sucesso" element={<SuccessPage />}></Route>
+                    <Route path="/assentos/:idSessao" element={<SeatsPage setComprador={setComprador} setFilme={setFilme}/>}></Route>
+                    <Route path="/sucesso" element={<SuccessPage comprador={comprador} filme={filme}/>}></Route>
                 </Routes>
                 
             </BrowserRouter>

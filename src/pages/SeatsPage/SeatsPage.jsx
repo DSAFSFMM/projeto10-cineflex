@@ -4,18 +4,22 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
 
-export default function SeatsPage() {
-
+export default function SeatsPage(props) {
+    const {setComprador, setFilme} = props;
     const {idSessao} = useParams();
     const [assentos, setAssentos] = useState(null);
     const [selecionados, setSelecionados] = useState([]);
+    const [assentosName, setAssentosName] = useState([]);
     const [name,setName] = useState("");
     const [cpf, setCpf] = useState("");
     const navigate = useNavigate();
 
     useEffect(()=>{
         const promisse = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`);
-        promisse.then((resposta)=>{setAssentos(resposta.data.seats)});
+        promisse.then((resposta)=>{
+            setAssentos(resposta.data.seats);
+            setFilme(resposta.data);
+        });
         promisse.catch((erro)=>console.log(erro));
     }, []);
 
@@ -29,13 +33,15 @@ export default function SeatsPage() {
         );
     }
 
-    function selecionaAssento(id,estado){
+    function selecionaAssento(id,estado,name){
         if(!estado){
             if (selecionados.includes(id)) {
                 setSelecionados(selecionados.filter((item)=>item !== id));
+                setAssentosName(assentosName.filter((item)=>item !== name));
                 console.log(selecionados.filter((item)=>item !== id));
             }else{
                 setSelecionados([...selecionados, id]);
+                setAssentosName([...assentosName, name]);
                 console.log([...selecionados, id]);
             }
         }else{
@@ -46,6 +52,8 @@ export default function SeatsPage() {
     function reservaAssentos(event) {
         event.preventDefault();
         const objeto = {ids: selecionados, name: name, cpf: cpf};
+        const comprador = {names: assentosName, name: name, cpf: cpf}
+        setComprador(comprador);
         const post = axios.post("https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many", objeto);
         post.then(()=>navigate("/sucesso"));
         post.catch((erro)=>console.log(erro));
@@ -57,7 +65,7 @@ export default function SeatsPage() {
             Selecione o(s) assento(s)
 
             <SeatsContainer>
-                {assentos.map((el)=><SeatItem key={el.id} selecionado={selecionados.includes(el.id)} estado={el.isAvailable} onClick={()=>selecionaAssento(el.id, el.isAvailable)}>{el.name}</SeatItem>)}
+                {assentos.map((el)=><SeatItem key={el.id} selecionado={selecionados.includes(el.id)} estado={el.isAvailable} onClick={()=>selecionaAssento(el.id, el.isAvailable, el.name)}>{el.name}</SeatItem>)}
             </SeatsContainer>
 
             <CaptionContainer>
