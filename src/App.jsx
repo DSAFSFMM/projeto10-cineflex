@@ -28,7 +28,7 @@ export default function App() {
             <ResetStyle/>
             <GlobalStyle/>
                 <NavContainer>
-                    {pagina&&<ion-icon onClick={retorna} name="arrow-back-outline"></ion-icon>}
+                    {pagina&&<ion-icon data-test="go-home-header-btn" onClick={retorna} name="arrow-back-outline"></ion-icon>}
                     CINEFLEX
                 </NavContainer>
                 
