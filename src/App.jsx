@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import HomePage from "./pages/HomePage/HomePage"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom"
 import SeatsPage from "./pages/SeatsPage/SeatsPage"
 import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
@@ -15,23 +15,29 @@ export default function App() {
 
     const [comprador, setComprador] = useState({});
     const [filme, setFilme] = useState({});
+    const [pagina, setPagina] = useState(false);
+    const navigate = useNavigate();
+    
+
+    function retorna(){
+        navigate(-1);
+    }
 
     return (
         <>
             <ResetStyle/>
             <GlobalStyle/>
-            <BrowserRouter>
-
-                <NavContainer>CINEFLEX</NavContainer>
+                <NavContainer>
+                    {pagina&&<ion-icon onClick={retorna} name="arrow-back-outline"></ion-icon>}
+                    CINEFLEX
+                </NavContainer>
                 
                 <Routes>
-                    <Route path="/" element={<HomePage />}></Route>
-                    <Route path="/sessoes/:idFilme" element={<SessionsPage />}></Route>
-                    <Route path="/assentos/:idSessao" element={<SeatsPage setComprador={setComprador} setFilme={setFilme}/>}></Route>
-                    <Route path="/sucesso" element={<SuccessPage comprador={comprador} filme={filme}/>}></Route>
+                    <Route path="/" element={<HomePage setPagina={setPagina}/>}></Route>
+                    <Route path="/sessoes/:idFilme" element={<SessionsPage setPagina={setPagina}/>}></Route>
+                    <Route path="/assentos/:idSessao" element={<SeatsPage setPagina={setPagina} setComprador={setComprador} setFilme={setFilme}/>}></Route>
+                    <Route path="/sucesso" element={<SuccessPage setPagina={setPagina} comprador={comprador} filme={filme}/>}></Route>
                 </Routes>
-                
-            </BrowserRouter>
         </>
     )
 }
@@ -51,5 +57,10 @@ const NavContainer = styled.div`
     a {
         text-decoration: none;
         color: #E8833A;
+    }
+    ion-icon{
+        color: black;
+        position: absolute;
+        left: 18px;
     }
 `

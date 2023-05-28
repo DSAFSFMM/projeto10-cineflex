@@ -4,9 +4,11 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
 
-export default function SessionsPage() {
+export default function SessionsPage(props) {
+    const {setPagina} = props;
     const {idFilme} = useParams();
     const [filme, setFilme] = useState(null);
+    setPagina(true);
 
     useEffect(()=>{
         const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/movies/${idFilme}/showtimes`);

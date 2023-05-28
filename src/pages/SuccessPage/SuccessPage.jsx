@@ -2,7 +2,8 @@ import { Link } from "react-router-dom"
 import styled from "styled-components"
 
 export default function SuccessPage(props) {
-    const {comprador, filme} = props;
+    const {setPagina, comprador, filme} = props;
+    setPagina(false);
     
     return (
         <PageContainer>

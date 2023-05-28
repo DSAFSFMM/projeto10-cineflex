@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
 
 export default function SeatsPage(props) {
-    const {setComprador, setFilme} = props;
+    const {setComprador, setFilme, setPagina} = props;
     const {idSessao} = useParams();
     const [assentos, setAssentos] = useState(null);
     const [selecionados, setSelecionados] = useState([]);
@@ -13,6 +13,7 @@ export default function SeatsPage(props) {
     const [name,setName] = useState("");
     const [cpf, setCpf] = useState("");
     const navigate = useNavigate();
+    setPagina(true);
 
     useEffect(()=>{
         const promisse = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`);
